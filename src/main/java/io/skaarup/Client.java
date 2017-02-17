@@ -25,6 +25,7 @@ public class Client extends Observable {
     private Scanner reader;
     private PrintWriter writer;
     private boolean connected;
+    private boolean running;
 
     private List<String> users;
 
@@ -41,9 +42,6 @@ public class Client extends Observable {
         this.host = host;
         this.port = port;
         this.username = username;
-        users = new CopyOnWriteArrayList<>();
-        socket = new Socket();
-        connected = false;
     }
 
     /**
@@ -76,6 +74,10 @@ public class Client extends Observable {
      * Sets up the initial connection and begins receiving messages immediately
      */
     private void initConnection() throws IOException {
+        users = new CopyOnWriteArrayList<>();
+        socket = new Socket();
+        connected = false;
+
         socket.connect(new InetSocketAddress(host, port));
 
         reader = new Scanner(socket.getInputStream());
@@ -160,7 +162,7 @@ public class Client extends Observable {
      * @param text text
      */
     public void sendToAll(String text) {
-        writer.println("MESSAGE#ALL#" + text);
+        writer.println("MSG#ALL#" + text);
     }
 
     /**
@@ -170,7 +172,7 @@ public class Client extends Observable {
      * @param username the name of the user that should be whispered to
      */
     public void sendWhisper(String text, String username) {
-        writer.println("MESSAGE#" + username + "#" + text);
+        writer.println("MSG#" + username + "#" + text);
     }
 
     /**
