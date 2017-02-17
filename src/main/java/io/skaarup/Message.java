@@ -1,3 +1,5 @@
+package io.skaarup;
+
 /**
  * Created by Niki on 2017-02-16.
  *

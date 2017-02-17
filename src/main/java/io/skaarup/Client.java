@@ -1,3 +1,5 @@
+package io.skaarup;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -96,7 +98,7 @@ public class Client extends Observable {
     }
 
     /**
-     * Message receiving loop
+     * io.skaarup.Message receiving loop
      */
     private void receiver() {
         String s;
@@ -173,7 +175,7 @@ public class Client extends Observable {
 
     /**
      * Auto detect whether a message should be send as private or public
-     * If a Message contains a username it will be sent to that user, if not
+     * If a io.skaarup.Message contains a username it will be sent to that user, if not
      * it will be sent to all users
      *
      * @param msg the message which is to be sent

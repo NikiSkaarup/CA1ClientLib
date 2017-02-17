@@ -1,3 +1,5 @@
+package io.skaarup;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -19,7 +21,7 @@ class Test implements Observer {
 
         Message msg;
 //        for (int i = 0; i < 10; i++) {
-//        msg = new Message("ClientLib: spam");
+//        msg = new io.skaarup.Message("ClientLib: spam");
 //            client.sendMessage(msg);
 //        }
 

@@ -1,3 +1,5 @@
+package io.skaarup;
+
 /**
  * Created by Niki on 2017-02-16.
  *
@@ -33,7 +35,7 @@ public class Notification {
 
     @Override
     public String toString() {
-        return "Notification{" +
+        return "io.skaarup.Notification{" +
                 "message=" + message +
                 ", type=" + type +
                 ", user='" + user + '\'' +
