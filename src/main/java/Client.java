@@ -90,6 +90,7 @@ public class Client extends Observable {
             connected = true;
             receiver();
         } else {
+            System.out.println("LOGIN FAILED!");
             // Login seems to have failed!
         }
     }
@@ -99,27 +100,40 @@ public class Client extends Observable {
      */
     private void receiver() {
         String s;
+        Notification n;
         while ((s = reader.nextLine()) != null) {
             String[] temp = s.split("#");
-            if (temp.length <= 0) continue;
+            if (temp.length < 2) {
+                System.out.println("Continued: UPDATE/DELETE");
+                continue;
+            }
 
             if (temp[0].equalsIgnoreCase("UPDATE")) {
                 addUser(temp);
+                n = new Notification(Notification.Type.UPDATE, temp[1]);
+                setChanged();
+                notifyObservers(n);
                 continue;
             }
             if (temp[0].equalsIgnoreCase("DELETE")) {
                 delUser(temp);
+                n = new Notification(Notification.Type.DELETE, temp[1]);
+                setChanged();
+                notifyObservers(n);
                 continue;
             }
 
+            if (temp.length < 3) {
+                System.out.println("Continued: MESSAGE");
+                continue;
+            }
             if (temp[0].equalsIgnoreCase("MSG")) {
-                if (temp.length < 3) continue;
-
                 String username = temp[1];
                 String data = temp[2];
                 Message message = new Message(username, data);
+                n = new Notification(Notification.Type.MESSAGE, message);
                 setChanged();
-                notifyObservers(message);
+                notifyObservers(n);
             }
         }
     }
@@ -144,7 +158,7 @@ public class Client extends Observable {
      * @param text text
      */
     public void sendToAll(String text) {
-        writer.printf("MSG#ALL#%s\n", text);
+        writer.println("MESSAGE#ALL#" + text);
     }
 
     /**
@@ -154,7 +168,7 @@ public class Client extends Observable {
      * @param username the name of the user that should be whispered to
      */
     public void sendWhisper(String text, String username) {
-        writer.printf("MSG#%s#%s\n", username, text);
+        writer.println("MESSAGE#" + username + "#" + text);
     }
 
     /**

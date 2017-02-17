@@ -10,14 +10,21 @@ import java.util.Scanner;
 class Test implements Observer {
 
     private Test() {
-        Client client = new Client("localhost", 8081, "Test");
+        Client client = new Client("localhost", 8081, "CA1ClientLib");
         client.addObserver(this);
         client.connect();
 
         Scanner scanner = new Scanner(System.in);
         String s;
+
+        Message msg;
+//        for (int i = 0; i < 10; i++) {
+//        msg = new Message("ClientLib: spam");
+//            client.sendMessage(msg);
+//        }
+
         while ((s = scanner.nextLine()) != null) {
-            Message msg = new Message(s);
+            msg = new Message(s);
             client.sendMessage(msg);
         }
     }
@@ -28,9 +35,22 @@ class Test implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (!(arg instanceof Message)) return;
+        if (!(arg instanceof Notification)) return;
 
-        Message msg = (Message) arg;
-        System.out.println(msg.username + ": " + msg.text);
+        Notification n = (Notification) arg;
+        System.out.println(n);
+        switch (n.getType()) {
+            case MESSAGE:
+                Message msg = n.getMessage();
+                System.out.println("MSG> " + msg.username + ": " + msg.text);
+                break;
+            case UPDATE:
+                System.out.println("UPDATE> " + n.getUser());
+                break;
+            case DELETE:
+                System.out.println("DELETE> " + n.getUser());
+                break;
+        }
+
     }
 }
